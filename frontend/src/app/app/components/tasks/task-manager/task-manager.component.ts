@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { Task, TaskStatus } from '../../../../models/task.model';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Task, TaskStatus, SyncStatus } from '../../../../models/task.model';
 import { TaskService } from '../../../../services/task.service';
+import { OfflineService } from '../../../../services/offline.service';
 
 @Component({
   selector: 'app-task-manager',
   templateUrl: './task-manager.component.html',
   styleUrls: ['./task-manager.component.css']
 })
-export class TaskManagerComponent implements OnInit {
+export class TaskManagerComponent implements OnInit, OnDestroy {
   tasks: Task[] = [];
   isLoading = false;
   isInitialLoad = true;
@@ -21,10 +23,42 @@ export class TaskManagerComponent implements OnInit {
   isCreating = false;
   isEditing = false;
 
-  constructor(private taskService: TaskService) {}
+  // Offline/sync status
+  syncStatus: SyncStatus = {
+    isOnline: true,
+    pendingSyncCount: 0,
+    lastSyncTime: null
+  };
+
+  private syncSubscription?: Subscription;
+
+  constructor(
+    private taskService: TaskService,
+    private offlineService: OfflineService
+  ) {}
 
   ngOnInit(): void {
     this.loadTasks();
+    this.setupSyncStatusMonitoring();
+  }
+
+  ngOnDestroy(): void {
+    if (this.syncSubscription) {
+      this.syncSubscription.unsubscribe();
+    }
+  }
+
+  private setupSyncStatusMonitoring(): void {
+    this.syncSubscription = this.offlineService.syncStatus$.subscribe(status => {
+      this.syncStatus = status;
+      
+      // Update messages based on sync status
+      if (!status.isOnline) {
+        this.successMessage = 'Working offline. Changes will be synced when connection is restored.';
+      } else if (status.pendingSyncCount > 0) {
+        this.successMessage = `Syncing ${status.pendingSyncCount} pending changes...`;
+      }
+    });
   }
 
   loadTasks(): void {
@@ -117,6 +151,36 @@ export class TaskManagerComponent implements OnInit {
   onFilterChange(status: TaskStatus | 'all'): void {
     this.filterStatus = status;
     this.loadTasks();
+  }
+
+  onTaskReordered(reorderedTasks: Task[]): void {
+    this.tasks = reorderedTasks;
+    
+    // Save the new order
+    this.taskService.reorderTasks(reorderedTasks).subscribe({
+      next: () => {
+        this.successMessage = 'Tasks reordered successfully!';
+        this.clearSuccessMessage();
+      },
+      error: (err: string) => {
+        this.errorMessage = `Failed to save new order: ${err}`;
+        console.error('Failed to reorder tasks:', err);
+      }
+    });
+  }
+
+  // Force sync method for manual sync button
+  async onForceSync(): Promise<void> {
+    try {
+      this.successMessage = 'Syncing...';
+      await this.offlineService.forcSync();
+      this.loadTasks(); // Reload tasks after sync
+      this.successMessage = 'Sync completed successfully!';
+      this.clearSuccessMessage();
+    } catch (error) {
+      this.errorMessage = 'Sync failed. Please check your connection.';
+      console.error('Sync failed:', error);
+    }
   }
 
   // Utility methods for better error handling and messaging

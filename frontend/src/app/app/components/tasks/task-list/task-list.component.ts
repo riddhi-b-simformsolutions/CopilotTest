@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Task, TaskStatus } from '../../../../models/task.model';
 import { TaskService } from '../../../../services/task.service';
 
@@ -12,6 +13,7 @@ export class TaskListComponent {
   @Output() edit = new EventEmitter<Task>();
   @Output() delete = new EventEmitter<number>();
   @Output() statusChange = new EventEmitter<Task>();
+  @Output() reorder = new EventEmitter<Task[]>();
 
   deletingIds = new Set<number>();
   updatingStatusIds = new Set<number>();
@@ -102,5 +104,22 @@ export class TaskListComponent {
 
   isUpdatingStatus(task: Task): boolean {
     return task.id !== undefined && this.updatingStatusIds.has(task.id);
+  }
+
+  // Drag and drop functionality
+  onDrop(event: CdkDragDrop<Task[]>): void {
+    if (event.previousIndex !== event.currentIndex) {
+      // Create a copy of tasks array
+      const reorderedTasks = [...this.tasks];
+      
+      // Move the item in the array
+      moveItemInArray(reorderedTasks, event.previousIndex, event.currentIndex);
+      
+      // Update the local tasks array immediately for UI responsiveness
+      this.tasks = reorderedTasks;
+      
+      // Emit the reordered tasks to parent component
+      this.reorder.emit(reorderedTasks);
+    }
   }
 }

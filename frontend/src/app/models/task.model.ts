@@ -6,4 +6,12 @@ export interface Task {
   description?: string;
   status: TaskStatus;
   createdAt: string; // ISO string
+  priority?: number; // For drag-and-drop ordering
+}
+
+// For offline sync status
+export interface SyncStatus {
+  isOnline: boolean;
+  pendingSyncCount: number;
+  lastSyncTime: string | null;
 }

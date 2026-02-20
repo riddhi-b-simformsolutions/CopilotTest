@@ -1,37 +1,43 @@
-<table *ngIf="tasks.length">
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Description</th>
-      <th>Status</th>
-      <th>Created At</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let task of tasks">
-      <td class="title-cell">{{ task.title }}</td>
-      <td class="description-cell">{{ task.description || '—' }}</td>
-      <td class="status-cell">
-        <span [ngClass]="task.status">{{ getStatusDisplayText(task.status) }}</span>
-      </td>
-      <td class="date-cell">{{ task.createdAt | date: 'short' }}</td>
-      <td class="actions-cell">
-        <button (click)="onEdit(task)" class="edit-btn">Edit</button>
-        <button (click)="onDelete(task)" [disabled]="isDeleting(task)" class="delete-btn">
-          {{ isDeleting(task) ? 'Deleting...' : 'Delete' }}
-        </button>
-        <select
-          [ngModel]="task.status"
-          (ngModelChange)="changeStatus(task, $event)"
-          [disabled]="isUpdatingStatus(task)"
-          class="status-select">
-          <option value="todo">Todo</option>
-          <option value="in-progress">In Progress</option>
-          <option value="done">Done</option>
-        </select>
-        <span *ngIf="isUpdatingStatus(task)" class="updating-indicator">Updating...</span>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<div cdkDropList (cdkDropListDropped)="onDrop($event)" class="task-table-container">
+  <table *ngIf="tasks.length">
+    <thead>
+      <tr>
+        <th>Drag</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Created At</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let task of tasks" cdkDrag class="draggable-row">
+        <td class="drag-handle">
+          <div cdkDragHandle class="drag-icon">⋮⋮</div>
+        </td>
+        <td class="title-cell">{{ task.title }}</td>
+        <td class="description-cell">{{ task.description || '—' }}</td>
+        <td class="status-cell">
+          <span [ngClass]="task.status">{{ getStatusDisplayText(task.status) }}</span>
+        </td>
+        <td class="date-cell">{{ task.createdAt | date: 'short' }}</td>
+        <td class="actions-cell">
+          <button (click)="onEdit(task)" class="edit-btn">Edit</button>
+          <button (click)="onDelete(task)" [disabled]="isDeleting(task)" class="delete-btn">
+            {{ isDeleting(task) ? 'Deleting...' : 'Delete' }}
+          </button>
+          <select
+            [ngModel]="task.status"
+            (ngModelChange)="changeStatus(task, $event)"
+            [disabled]="isUpdatingStatus(task)"
+            class="status-select">
+            <option value="todo">Todo</option>
+            <option value="in-progress">In Progress</option>
+            <option value="done">Done</option>
+          </select>
+          <span *ngIf="isUpdatingStatus(task)" class="updating-indicator">Updating...</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

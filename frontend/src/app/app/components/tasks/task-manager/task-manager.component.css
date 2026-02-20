@@ -56,6 +56,12 @@
   background-color: white;
 }
 
+.toolbar-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 /* Success Message */
 .success-message {
   color: #388e3c;
@@ -216,4 +222,51 @@ label {
   display: flex;
   align-items: center;
   font-weight: 500;
+}
+
+/* Sync Status Styles */
+.sync-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.sync-status.online {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.sync-status.offline {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.status-icon {
+  font-size: 0.8rem;
+}
+
+.pending-count {
+  font-size: 0.75rem;
+  font-weight: normal;
+}
+
+.sync-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  margin-left: 0.25rem;
+}
+
+.sync-btn:hover {
+  background-color: #0056b3;
 }

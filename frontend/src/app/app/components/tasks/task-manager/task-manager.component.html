@@ -6,15 +6,34 @@
       Add Task
     </button>
 
-    <label>
-      Filter:
-      <select [ngModel]="filterStatus" (ngModelChange)="onFilterChange($event)" [disabled]="isLoading">
-        <option value="all">All Tasks</option>
-        <option value="todo">Todo</option>
-        <option value="in-progress">In Progress</option>
-        <option value="done">Done</option>
-      </select>
-    </label>
+    <div class="toolbar-controls">
+      <label>
+        Filter:
+        <select [ngModel]="filterStatus" (ngModelChange)="onFilterChange($event)" [disabled]="isLoading">
+          <option value="all">All Tasks</option>
+          <option value="todo">Todo</option>
+          <option value="in-progress">In Progress</option>
+          <option value="done">Done</option>
+        </select>
+      </label>
+
+      <!-- Sync Status Indicator -->
+      <div class="sync-status" [ngClass]="{'offline': !syncStatus.isOnline, 'online': syncStatus.isOnline}">
+        <span class="status-icon">{{ syncStatus.isOnline ? '🟢' : '🔴' }}</span>
+        <span class="status-text">
+          {{ syncStatus.isOnline ? 'Online' : 'Offline' }}
+          <span *ngIf="syncStatus.pendingSyncCount > 0" class="pending-count">
+            ({{ syncStatus.pendingSyncCount }} pending)
+          </span>
+        </span>
+        <button 
+          *ngIf="syncStatus.isOnline && syncStatus.pendingSyncCount > 0" 
+          (click)="onForceSync()" 
+          class="sync-btn">
+          Sync Now
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- Success Message -->
@@ -52,7 +71,8 @@
     [tasks]="tasks"
     (edit)="onEditTask($event)"
     (delete)="onDeleteTask($event)"
-    (statusChange)="onStatusChanged($event)">
+    (statusChange)="onStatusChanged($event)"
+    (reorder)="onTaskReordered($event)">
   </app-task-list>
 
   <!-- Empty State -->
