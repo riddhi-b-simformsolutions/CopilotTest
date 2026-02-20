@@ -1,0 +1,72 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <h3 *ngIf="isEditMode">Edit Task</h3>
+  <h3 *ngIf="!isEditMode">Create Task</h3>
+
+  <!-- Success Message -->
+  <div *ngIf="successMessage" class="success-message">
+    ✅ {{ successMessage }}
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="error-message">
+    ❌ {{ errorMessage }}
+  </div>
+
+  <div class="form-group">
+    <label for="title">Task Title *</label>
+    <input
+      id="title"
+      type="text"
+      formControlName="title"
+      [class.invalid]="shouldShowFieldError('title')"
+      placeholder="e.g., Complete project documentation, Review code changes..."
+      [disabled]="isSaving" />
+    <div class="field-error" *ngIf="shouldShowFieldError('title')">
+      <span *ngIf="form.get('title')?.hasError('required')">Please enter a task title</span>
+      <span *ngIf="form.get('title')?.hasError('minlength')">Title should be at least 3 characters long</span>
+    </div>
+    <small class="field-hint" *ngIf="!shouldShowFieldError('title')">
+      Give your task a clear, descriptive title
+    </small>
+  </div>
+
+  <div class="form-group">
+    <label for="description">Description (Optional)</label>
+    <textarea 
+      id="description" 
+      formControlName="description"
+      rows="3"
+      placeholder="Add more details about this task, requirements, notes, or any relevant information..."
+      [disabled]="isSaving"></textarea>
+    <small class="field-hint">
+      Provide additional context or details about the task
+    </small>
+  </div>
+
+  <div class="form-group">
+    <label for="status">Current Status *</label>
+    <select id="status" formControlName="status" [disabled]="isSaving">
+      <option *ngFor="let s of statuses" [value]="s">
+        {{ s === 'in-progress' ? 'In Progress' : (s | titlecase) }}
+      </option>
+    </select>
+    <small class="field-hint">
+      Set the current status of this task
+    </small>
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" [disabled]="isSaving" class="submit-btn">
+      <span *ngIf="isSaving" class="loading-spinner"></span>
+      {{ isEditMode ? (isSaving ? 'Saving...' : 'Save Changes') : (isSaving ? 'Creating...' : 'Create Task') }}
+    </button>
+    <button type="button" (click)="onCancel()" [disabled]="isSaving" class="cancel-btn">
+      Cancel
+    </button>
+  </div>
+
+  <!-- Form hints -->
+  <div class="form-hints" *ngIf="!hasAttemptedSubmit">
+    <small>* Required fields</small>
+  </div>
+</form>

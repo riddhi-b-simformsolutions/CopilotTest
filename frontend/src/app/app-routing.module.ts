@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
-import { HealthComponent } from './components/health/health.component';
+import { TaskManagerComponent } from './app/components/tasks/task-manager/task-manager.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'health', component: HealthComponent },
-  { path: '**', redirectTo: '' }
+  { path: 'tasks', component: TaskManagerComponent },
+  { path: '', redirectTo: '/tasks', pathMatch: 'full' },
+  { path: '**', redirectTo: '/tasks' }
 ];
 
 @NgModule({

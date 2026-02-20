@@ -1,0 +1,228 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+th, td {
+  padding: 0.5rem;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+/* Status colors and styling */
+.todo {
+  color: #1976d2;
+  font-weight: bold;
+  background-color: #e3f2fd;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.in-progress {
+  color: #f57c00;
+  font-weight: bold;
+  background-color: #fff3e0;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.done {
+  color: #388e3c;
+  font-weight: bold;
+  background-color: #e8f5e8;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+/* Actions column styling */
+.actions {
+  min-width: 300px;
+}
+
+.edit-btn, .delete-btn {
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  background-color: #fff;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.edit-btn {
+  background-color: #2196f3;
+  color: white;
+  border-color: #2196f3;
+}
+
+.edit-btn:hover:not(:disabled) {
+  background-color: #1976d2;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: white;
+  border-color: #f44336;
+}
+
+.delete-btn:hover:not(:disabled) {
+  background-color: #d32f2f;
+}
+
+button:disabled {
+  background-color: #e0e0e0;
+  color: #999;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Status controls styling */
+.status-controls {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+}
+
+.status-controls label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.status-select {
+  width: 100%;
+  padding: 0.25rem;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  font-size: 0.9rem;
+  background-color: white;
+}
+
+.status-select:disabled {
+  background-color: #e0e0e0;
+  cursor: not-allowed;
+}
+
+.status-select option:disabled {
+  background-color: #f0f0f0;
+  color: #999;
+}
+
+.updating-indicator {
+  display: inline-block;
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: #f57c00;
+  font-style: italic;
+}
+
+/* Status buttons */
+.status-buttons {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.status-btn {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: bold;
+  transition: background-color 0.2s, opacity 0.2s;
+}
+
+.todo-btn {
+  background-color: #e3f2fd;
+  color: #1976d2;
+  border-color: #1976d2;
+}
+
+.todo-btn:hover:not(:disabled) {
+  background-color: #bbdefb;
+}
+
+.progress-btn {
+  background-color: #fff3e0;
+  color: #f57c00;
+  border-color: #f57c00;
+}
+
+.progress-btn:hover:not(:disabled) {
+  background-color: #ffe0b2;
+}
+
+.done-btn {
+  background-color: #e8f5e8;
+  color: #388e3c;
+  border-color: #388e3c;
+}
+
+.done-btn:hover:not(:disabled) {
+  background-color: #c8e6c9;
+}
+
+.status-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background-color: #f5f5f5;
+  color: #999;
+  border-color: #ddd;
+}
+
+/* Date formatting */
+.date-cell {
+  cursor: help;
+}
+
+.relative-date {
+  display: block;
+  color: #999;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  font-style: italic;
+}
+
+/* Enhanced table styling */
+td {
+  vertical-align: middle;
+}
+
+td:first-child {
+  font-weight: 500;
+}
+
+td:nth-child(2) {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Hover effects for better UX */
+tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Loading states */
+tr.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}

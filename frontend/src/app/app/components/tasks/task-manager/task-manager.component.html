@@ -1,0 +1,75 @@
+<div class="task-manager">
+  <h2>Task Manager</h2>
+
+  <div class="toolbar">
+    <button (click)="onCreateClicked()" [disabled]="isLoading" title="Create new task (Ctrl+N)">
+      <span class="btn-icon">➕</span>
+      Add Task
+    </button>
+
+    <label>
+      Filter:
+      <select [ngModel]="filterStatus" (ngModelChange)="onFilterChange($event)" [disabled]="isLoading">
+        <option value="all">All Tasks</option>
+        <option value="todo">Todo</option>
+        <option value="in-progress">In Progress</option>
+        <option value="done">Done</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="keyboard-hints" *ngIf="!showCreateForm && !editingTask && !isLoading">
+    <small>💡 <strong>Pro tips:</strong> Press <kbd>Ctrl+N</kbd> to create a new task, <kbd>Esc</kbd> to cancel forms</small>
+  </div>
+
+  <!-- Success Message -->
+  <div *ngIf="successMessage" class="success-message">
+    ✅ {{ successMessage }}
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="error">
+    ❌ {{ errorMessage }}
+    <button (click)="loadTasks()" class="retry-btn">Retry</button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading">
+    <div class="loading-spinner"></div>
+    <span>{{ isInitialLoad ? 'Loading tasks...' : 'Refreshing tasks...' }}</span>
+  </div>
+
+  <app-task-form
+    *ngIf="showCreateForm"
+    (submitted)="onTaskCreated($event)"
+    (cancelled)="onTaskCreateCancelled()">
+  </app-task-form>
+
+  <app-task-form
+    *ngIf="editingTask"
+    [task]="editingTask"
+    (submitted)="onTaskUpdated($event)"
+    (cancelled)="onTaskEditCancelled()">
+  </app-task-form>
+
+  <app-task-list
+    *ngIf="!isLoading"
+    [tasks]="tasks"
+    (edit)="onEditTask($event)"
+    (delete)="onDeleteTask($event)"
+    (statusChange)="onStatusChanged($event)">
+  </app-task-list>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && !tasks.length" class="empty-state">
+    <div class="empty-icon">📝</div>
+    <h3>No tasks yet</h3>
+    <p>{{ filterStatus === 'all' ? 'Create your first task to get started!' : 'No tasks found with the current filter.' }}</p>
+    <button *ngIf="filterStatus === 'all'" (click)="onCreateClicked()" class="primary-btn">
+      Create First Task
+    </button>
+    <button *ngIf="filterStatus !== 'all'" (click)="onFilterChange('all')" class="secondary-btn">
+      Show All Tasks
+    </button>
+  </div>
+</div>

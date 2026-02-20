@@ -1,0 +1,133 @@
+/* Global app layout */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f5f5;
+}
+
+/* Header styling */
+.app-header {
+  background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+}
+
+.app-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: white;
+}
+
+.app-icon {
+  font-size: 1.8rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* Navigation styling */
+.app-nav {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.nav-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.1);
+  font-weight: 500;
+  font-style: italic;
+}
+
+.nav-icon {
+  font-size: 1.1rem;
+}
+
+/* Main content area */
+.app-main {
+  flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Footer styling */
+.app-footer {
+  background-color: #333;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  padding: 1rem;
+  margin-top: auto;
+  border-top: 1px solid #ddd;
+}
+
+.app-footer p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    height: auto;
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  .app-title {
+    font-size: 1.3rem;
+  }
+  
+  .app-nav {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .nav-info {
+    text-align: center;
+    justify-content: center;
+  }
+  
+  .app-main {
+    padding: 1rem 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-title {
+    font-size: 1.1rem;
+  }
+  
+  .nav-info {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+}
