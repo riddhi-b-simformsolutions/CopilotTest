@@ -187,19 +187,6 @@ button:disabled {
   border-color: #ddd;
 }
 
-/* Date formatting */
-.date-cell {
-  cursor: help;
-}
-
-.relative-date {
-  display: block;
-  color: #999;
-  font-size: 0.75rem;
-  margin-top: 0.25rem;
-  font-style: italic;
-}
-
 /* Enhanced table styling */
 td {
   vertical-align: middle;
@@ -219,10 +206,4 @@ td:nth-child(2) {
 /* Hover effects for better UX */
 tr:hover {
   background-color: #f9f9f9;
-}
-
-/* Loading states */
-tr.loading {
-  opacity: 0.6;
-  pointer-events: none;
 }

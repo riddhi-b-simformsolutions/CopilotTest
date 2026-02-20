@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Task, TaskStatus } from '../../../../models/task.model';
 import { TaskService } from '../../../../services/task.service';
 
@@ -7,7 +7,7 @@ import { TaskService } from '../../../../services/task.service';
   templateUrl: './task-manager.component.html',
   styleUrls: ['./task-manager.component.css']
 })
-export class TaskManagerComponent implements OnInit, OnDestroy {
+export class TaskManagerComponent implements OnInit {
   tasks: Task[] = [];
   isLoading = false;
   isInitialLoad = true;
@@ -25,13 +25,6 @@ export class TaskManagerComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadTasks();
-    
-    // Add keyboard shortcut for creating new task (Ctrl/Cmd + N)
-    document.addEventListener('keydown', this.handleKeyboardShortcuts.bind(this));
-  }
-
-  ngOnDestroy(): void {
-    document.removeEventListener('keydown', this.handleKeyboardShortcuts.bind(this));
   }
 
   loadTasks(): void {
@@ -157,22 +150,5 @@ export class TaskManagerComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.errorMessage = '';
     }, 5000); // Clear after 5 seconds
-  }
-
-  private handleKeyboardShortcuts(event: KeyboardEvent): void {
-    // Ctrl/Cmd + N to create new task
-    if ((event.ctrlKey || event.metaKey) && event.key === 'n' && !this.showCreateForm && !this.editingTask) {
-      event.preventDefault();
-      this.onCreateClicked();
-    }
-    
-    // Escape to cancel forms
-    if (event.key === 'Escape') {
-      if (this.showCreateForm) {
-        this.onTaskCreateCancelled();
-      } else if (this.editingTask) {
-        this.onTaskEditCancelled();
-      }
-    }
   }
 }

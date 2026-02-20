@@ -38,14 +38,7 @@ export class TaskListComponent {
   onDelete(task: Task): void {
     if (!task.id) return;
     
-    // Enhanced confirmation dialog
-    const confirmMessage = `Are you sure you want to delete this task?\n\n` +
-      `Title: "${task.title}"\n` +
-      `Status: ${this.getStatusDisplayText(task.status)}\n` +
-      `Created: ${new Date(task.createdAt).toLocaleDateString()}\n\n` +
-      `This action cannot be undone.`;
-      
-    const confirmed = confirm(confirmMessage);
+    const confirmed = confirm(`Are you sure you want to delete "${task.title}"?`);
     if (!confirmed) return;
 
     this.deletingIds.add(task.id);
@@ -56,7 +49,7 @@ export class TaskListComponent {
       },
       error: (errorMessage: string) => {
         this.deletingIds.delete(task.id!);
-        alert(`Failed to delete task "${task.title}": ${errorMessage}`);
+        alert(`Failed to delete task: ${errorMessage}`);
       }
     });
   }
@@ -109,26 +102,5 @@ export class TaskListComponent {
 
   isUpdatingStatus(task: Task): boolean {
     return task.id !== undefined && this.updatingStatusIds.has(task.id);
-  }
-
-  getRelativeDate(dateString: string): string {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInMs = now.getTime() - date.getTime();
-    const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
-    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
-    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-
-    if (diffInMinutes < 1) {
-      return 'just now';
-    } else if (diffInMinutes < 60) {
-      return `${diffInMinutes} min${diffInMinutes !== 1 ? 's' : ''} ago`;
-    } else if (diffInHours < 24) {
-      return `${diffInHours} hour${diffInHours !== 1 ? 's' : ''} ago`;
-    } else if (diffInDays < 7) {
-      return `${diffInDays} day${diffInDays !== 1 ? 's' : ''} ago`;
-    } else {
-      return 'more than a week ago';
-    }
   }
 }

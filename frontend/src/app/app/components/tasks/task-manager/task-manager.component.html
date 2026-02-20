@@ -2,8 +2,7 @@
   <h2>Task Manager</h2>
 
   <div class="toolbar">
-    <button (click)="onCreateClicked()" [disabled]="isLoading" title="Create new task (Ctrl+N)">
-      <span class="btn-icon">➕</span>
+    <button (click)="onCreateClicked()" [disabled]="isLoading">
       Add Task
     </button>
 
@@ -16,10 +15,6 @@
         <option value="done">Done</option>
       </select>
     </label>
-  </div>
-
-  <div class="keyboard-hints" *ngIf="!showCreateForm && !editingTask && !isLoading">
-    <small>💡 <strong>Pro tips:</strong> Press <kbd>Ctrl+N</kbd> to create a new task, <kbd>Esc</kbd> to cancel forms</small>
   </div>
 
   <!-- Success Message -->
