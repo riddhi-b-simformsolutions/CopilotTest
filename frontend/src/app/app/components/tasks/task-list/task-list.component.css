@@ -2,18 +2,55 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
+  background-color: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 th, td {
-  padding: 0.5rem;
-  border-bottom: 1px solid #ddd;
+  padding: 0.75rem;
+  border-bottom: 1px solid #dee2e6;
   text-align: left;
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 th {
-  background-color: #f5f5f5;
-  font-weight: bold;
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #495057;
+}
+
+/* Column specific styling */
+.title-cell {
+  font-weight: 500;
+  color: #212529;
+}
+
+.description-cell {
+  color: #6c757d;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-cell {
+  width: 120px;
+}
+
+.date-cell {
+  color: #6c757d;
+  font-size: 0.9rem;
+  width: 130px;
+}
+
+.actions-cell {
+  width: 320px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
 }
 
 /* Status colors and styling */
@@ -44,166 +81,69 @@ th {
   font-size: 0.9rem;
 }
 
-/* Actions column styling */
-.actions {
-  min-width: 300px;
-}
-
+/* Action buttons styling */
 .edit-btn, .delete-btn {
-  margin-right: 0.5rem;
-  margin-bottom: 0.5rem;
-  padding: 0.25rem 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 3px;
-  background-color: #fff;
+  padding: 0.3rem 0.6rem;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
 }
 
 .edit-btn {
-  background-color: #2196f3;
+  background-color: #007bff;
   color: white;
-  border-color: #2196f3;
 }
 
 .edit-btn:hover:not(:disabled) {
-  background-color: #1976d2;
+  background-color: #0056b3;
 }
 
 .delete-btn {
-  background-color: #f44336;
+  background-color: #dc3545;
   color: white;
-  border-color: #f44336;
 }
 
 .delete-btn:hover:not(:disabled) {
-  background-color: #d32f2f;
+  background-color: #c82333;
 }
 
 button:disabled {
-  background-color: #e0e0e0;
-  color: #999;
+  background-color: #6c757d;
   cursor: not-allowed;
   opacity: 0.6;
 }
 
-/* Status controls styling */
-.status-controls {
-  margin-top: 0.5rem;
-  padding: 0.5rem;
-  background-color: #f9f9f9;
-  border-radius: 4px;
-  border: 1px solid #e0e0e0;
-}
-
-.status-controls label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 0.25rem;
-  font-size: 0.85rem;
-  color: #666;
-}
-
+/* Status select styling */
 .status-select {
-  width: 100%;
-  padding: 0.25rem;
-  border: 1px solid #ddd;
-  border-radius: 3px;
-  font-size: 0.9rem;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 0.8rem;
   background-color: white;
+  cursor: pointer;
+  min-width: 100px;
 }
 
 .status-select:disabled {
-  background-color: #e0e0e0;
+  background-color: #f8f9fa;
   cursor: not-allowed;
-}
-
-.status-select option:disabled {
-  background-color: #f0f0f0;
-  color: #999;
+  opacity: 0.6;
 }
 
 .updating-indicator {
-  display: inline-block;
-  margin-top: 0.25rem;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: #f57c00;
   font-style: italic;
 }
 
-/* Status buttons */
-.status-buttons {
-  display: flex;
-  gap: 0.25rem;
-  margin-bottom: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.status-btn {
-  padding: 0.25rem 0.5rem;
-  border: 1px solid;
-  border-radius: 3px;
-  cursor: pointer;
-  font-size: 0.8rem;
-  font-weight: bold;
-  transition: background-color 0.2s, opacity 0.2s;
-}
-
-.todo-btn {
-  background-color: #e3f2fd;
-  color: #1976d2;
-  border-color: #1976d2;
-}
-
-.todo-btn:hover:not(:disabled) {
-  background-color: #bbdefb;
-}
-
-.progress-btn {
-  background-color: #fff3e0;
-  color: #f57c00;
-  border-color: #f57c00;
-}
-
-.progress-btn:hover:not(:disabled) {
-  background-color: #ffe0b2;
-}
-
-.done-btn {
-  background-color: #e8f5e8;
-  color: #388e3c;
-  border-color: #388e3c;
-}
-
-.done-btn:hover:not(:disabled) {
-  background-color: #c8e6c9;
-}
-
-.status-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  background-color: #f5f5f5;
-  color: #999;
-  border-color: #ddd;
-}
-
-/* Enhanced table styling */
-td {
-  vertical-align: middle;
-}
-
-td:first-child {
-  font-weight: 500;
-}
-
-td:nth-child(2) {
-  max-width: 200px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* Hover effects for better UX */
+/* Table hover effects */
 tr:hover {
-  background-color: #f9f9f9;
+  background-color: #f8f9fa;
+}
+
+tr:last-child td {
+  border-bottom: none;
 }

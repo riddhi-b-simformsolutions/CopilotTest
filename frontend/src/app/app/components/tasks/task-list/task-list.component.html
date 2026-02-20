@@ -10,53 +10,27 @@
   </thead>
   <tbody>
     <tr *ngFor="let task of tasks">
-      <td>{{ task.title }}</td>
-      <td>{{ task.description || '—' }}</td>
-      <td>
+      <td class="title-cell">{{ task.title }}</td>
+      <td class="description-cell">{{ task.description || '—' }}</td>
+      <td class="status-cell">
         <span [ngClass]="task.status">{{ getStatusDisplayText(task.status) }}</span>
       </td>
-      <td>{{ task.createdAt | date: 'medium' }}</td>
-      <td class="actions">
+      <td class="date-cell">{{ task.createdAt | date: 'short' }}</td>
+      <td class="actions-cell">
         <button (click)="onEdit(task)" class="edit-btn">Edit</button>
         <button (click)="onDelete(task)" [disabled]="isDeleting(task)" class="delete-btn">
           {{ isDeleting(task) ? 'Deleting...' : 'Delete' }}
         </button>
-
-        <div class="status-controls">
-          <label>Quick Status Change:</label>
-          <div class="status-buttons">
-            <button 
-              (click)="changeStatus(task, 'todo')" 
-              [disabled]="task.status === 'todo' || isUpdatingStatus(task)"
-              class="status-btn todo-btn">
-              Todo
-            </button>
-            <button 
-              (click)="changeStatus(task, 'in-progress')" 
-              [disabled]="task.status === 'in-progress' || isUpdatingStatus(task)"
-              class="status-btn progress-btn">
-              In Progress
-            </button>
-            <button 
-              (click)="changeStatus(task, 'done')" 
-              [disabled]="task.status === 'done' || isUpdatingStatus(task)"
-              class="status-btn done-btn">
-              Done
-            </button>
-          </div>
-          
-          <label>Or select status:</label>
-          <select
-            [ngModel]="task.status"
-            (ngModelChange)="changeStatus(task, $event)"
-            [disabled]="isUpdatingStatus(task)"
-            class="status-select">
-            <option value="todo" [disabled]="task.status === 'todo'">Todo</option>
-            <option value="in-progress" [disabled]="task.status === 'in-progress'">In Progress</option>
-            <option value="done" [disabled]="task.status === 'done'">Done</option>
-          </select>
-          <span *ngIf="isUpdatingStatus(task)" class="updating-indicator">Updating...</span>
-        </div>
+        <select
+          [ngModel]="task.status"
+          (ngModelChange)="changeStatus(task, $event)"
+          [disabled]="isUpdatingStatus(task)"
+          class="status-select">
+          <option value="todo">Todo</option>
+          <option value="in-progress">In Progress</option>
+          <option value="done">Done</option>
+        </select>
+        <span *ngIf="isUpdatingStatus(task)" class="updating-indicator">Updating...</span>
       </td>
     </tr>
   </tbody>
