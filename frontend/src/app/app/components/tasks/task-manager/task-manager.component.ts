@@ -148,6 +148,12 @@ export class TaskManagerComponent implements OnInit, OnDestroy {
     this.clearSuccessMessage();
   }
 
+  onEndDateChanged(updated: Task): void {
+    this.tasks = this.tasks.map(t => (t.id === updated.id ? updated : t));
+    this.successMessage = `End date updated for "${updated.title}"`;
+    this.clearSuccessMessage();
+  }
+
   onFilterChange(status: TaskStatus | 'all'): void {
     this.filterStatus = status;
     this.loadTasks();

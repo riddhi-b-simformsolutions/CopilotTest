@@ -18,6 +18,12 @@ export class TaskListComponent {
   deletingIds = new Set<number>();
   updatingStatusIds = new Set<number>();
 
+  editingEndDateId: number | null = null;
+  editingEndDateValue: string = '';
+  savingEndDateIds = new Set<number>();
+
+  @Output() endDateChange = new EventEmitter<Task>();
+
   constructor(private taskService: TaskService) {}
 
   getStatusDisplayText(status: TaskStatus): string {
@@ -104,6 +110,54 @@ export class TaskListComponent {
 
   isUpdatingStatus(task: Task): boolean {
     return task.id !== undefined && this.updatingStatusIds.has(task.id);
+  }
+
+  startEditEndDate(task: Task): void {
+    if (!task.id) return;
+    this.editingEndDateId = task.id;
+    // Convert ISO string to yyyy-MM-dd for the date input
+    this.editingEndDateValue = task.endDate ? task.endDate.substring(0, 10) : '';
+  }
+
+  saveEndDate(task: Task): void {
+    if (!task.id || this.editingEndDateId !== task.id) return;
+
+    const newValue = this.editingEndDateValue;
+    const currentValue = task.endDate ? task.endDate.substring(0, 10) : '';
+
+    // Clear editing state immediately
+    this.editingEndDateId = null;
+
+    if (newValue === currentValue || !newValue) {
+      return; // Nothing changed or empty value — no-op
+    }
+
+    this.savingEndDateIds.add(task.id);
+
+    this.taskService.patchTask(task.id, { endDate: newValue }).subscribe({
+      next: (updated) => {
+        this.savingEndDateIds.delete(task.id!);
+        this.endDateChange.emit(updated);
+      },
+      error: (errorMessage: string) => {
+        this.savingEndDateIds.delete(task.id!);
+        alert(`Failed to update end date: ${errorMessage}`);
+      }
+    });
+  }
+
+  cancelEndDate(): void {
+    this.editingEndDateId = null;
+    this.editingEndDateValue = '';
+  }
+
+  onEndDateKeyDown(event: KeyboardEvent, task: Task): void {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.saveEndDate(task);
+    } else if (event.key === 'Escape') {
+      this.cancelEndDate();
+    }
   }
 
   // Drag and drop functionality

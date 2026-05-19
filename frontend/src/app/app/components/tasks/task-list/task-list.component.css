@@ -139,6 +139,45 @@ button:disabled {
   font-style: italic;
 }
 
+/* Inline end date editor */
+.editable-date-cell {
+  cursor: pointer;
+}
+
+.editable-date {
+  display: inline-block;
+  border-bottom: 1px dashed #6c757d;
+  cursor: pointer;
+  padding-bottom: 1px;
+}
+
+.editable-date:hover {
+  border-bottom-color: #007bff;
+  color: #007bff;
+}
+
+.inline-date-input {
+  width: 100%;
+  border: 1px solid #007bff;
+  border-radius: 4px;
+  padding: 0.2rem 0.3rem;
+  font-size: 0.85rem;
+  background-color: #f0f8ff;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.inline-date-input:focus {
+  border-color: #0056b3;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.saving-indicator {
+  font-size: 0.75rem;
+  color: #6c757d;
+  font-style: italic;
+}
+
 /* Table hover effects */
 tr:hover {
   background-color: #f8f9fa;

@@ -24,7 +24,25 @@
         </td>
         <td class="date-cell">{{ task.createdAt | date: 'short' }}</td>
         <td class="date-cell">{{ task.startDate ? (task.startDate | date: 'mediumDate') : '—' }}</td>
-        <td class="date-cell">{{ task.endDate ? (task.endDate | date: 'mediumDate') : '—' }}</td>
+        <td class="date-cell editable-date-cell">
+          <span
+            *ngIf="editingEndDateId !== task.id && !savingEndDateIds.has(task.id!)"
+            (click)="startEditEndDate(task)"
+            class="editable-date"
+            title="Click to edit end date">
+            {{ task.endDate ? (task.endDate | date: 'mediumDate') : '—' }}
+          </span>
+          <span *ngIf="savingEndDateIds.has(task.id!)" class="saving-indicator">Saving...</span>
+          <input
+            *ngIf="editingEndDateId === task.id"
+            type="date"
+            class="inline-date-input"
+            [value]="editingEndDateValue"
+            (input)="editingEndDateValue = $any($event.target).value"
+            (blur)="saveEndDate(task)"
+            (keydown)="onEndDateKeyDown($event, task)"
+            autofocus />
+        </td>
         <td class="actions-cell">
           <button (click)="onEdit(task)" class="edit-btn">Edit</button>
           <button (click)="onDelete(task)" [disabled]="isDeleting(task)" class="delete-btn">
