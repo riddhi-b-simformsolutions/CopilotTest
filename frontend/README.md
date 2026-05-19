@@ -113,6 +113,41 @@ You need to:
 - Add loading states for async operations
 - Display tasks in a user-friendly way
 
+## API Reference
+
+### TaskService (`src/app/services/task.service.ts`)
+
+Base URL: `http://localhost:3001/tasks`
+
+| Method | HTTP | Endpoint | Offline? | Description |
+|--------|------|----------|----------|-------------|
+| `getTasks(options?)` | GET | `/tasks` | ✅ cached | Fetch all tasks with optional status filter, sort, and pagination. |
+| `getTaskById(id)` | GET | `/tasks/:id` | ❌ | Fetch a single task by numeric ID. |
+| `createTask(payload)` | POST | `/tasks` | ✅ queued | Create a new task; `createdAt` is set automatically. |
+| `updateTask(id, task)` | PUT | `/tasks/:id` | ✅ queued | Full replacement of an existing task. |
+| `patchTask(id, partial)` | PATCH | `/tasks/:id` | ✅ queued | Partial update — commonly used for status changes. |
+| `deleteTask(id)` | DELETE | `/tasks/:id` | ✅ queued | Remove a task; mirrors deletion in the local cache. |
+| `reorderTasks(tasks)` | — | local only | ✅ queued | Persist drag-and-drop order via the `priority` field. |
+
+> **Offline behaviour**: when `navigator.onLine` is `false`, all write
+> operations are queued in `LocalStorageService` as pending actions and
+> replayed automatically by `OfflineService` when the connection is restored.
+
+### Task model (`src/app/models/task.model.ts`)
+
+```typescript
+export type TaskStatus = 'todo' | 'in-progress' | 'done';
+
+export interface Task {
+  id?: number;        // Assigned by the server (or temporarily by Date.now() offline)
+  title: string;      // Required. Minimum 3 characters.
+  description?: string;
+  status: TaskStatus; // Required.
+  createdAt: string;  // ISO 8601 timestamp, set automatically on creation.
+  priority?: number;  // Zero-based drag-and-drop order (lower = displayed first).
+}
+```
+
 ## Available Scripts
 
 - `npm start` - Start the development server
