@@ -37,6 +37,28 @@
       [disabled]="isSaving"></textarea>
   </div>
 
+  <div class="form-group date-row">
+    <div class="date-field">
+      <label for="startDate">Start Date</label>
+      <input
+        id="startDate"
+        type="date"
+        formControlName="startDate"
+        [disabled]="isSaving" />
+    </div>
+    <div class="date-field">
+      <label for="endDate">End Date</label>
+      <input
+        id="endDate"
+        type="date"
+        formControlName="endDate"
+        [disabled]="isSaving" />
+    </div>
+  </div>
+  <div class="field-error" *ngIf="form.hasError('endBeforeStart') && hasAttemptedSubmit">
+    End date must be on or after the start date.
+  </div>
+
   <div class="form-group">
     <label for="status">Status *</label>
     <select id="status" formControlName="status" [disabled]="isSaving">

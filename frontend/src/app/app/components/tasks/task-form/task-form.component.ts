@@ -1,5 +1,16 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+
+function endAfterStartValidator(): ValidatorFn {
+  return (group: AbstractControl): ValidationErrors | null => {
+    const start = group.get('startDate')?.value;
+    const end = group.get('endDate')?.value;
+    if (start && end && end < start) {
+      return { endBeforeStart: true };
+    }
+    return null;
+  };
+}
 import { Task, TaskStatus } from '../../../../models/task.model';
 import { TaskService } from '../../../../services/task.service';
 
@@ -28,8 +39,10 @@ export class TaskFormComponent implements OnChanges {
     this.form = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
       description: [''],
-      status: ['todo', Validators.required]
-    });
+      status: ['todo', Validators.required],
+      startDate: [''],
+      endDate: ['']
+    }, { validators: endAfterStartValidator() });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -42,7 +55,9 @@ export class TaskFormComponent implements OnChanges {
         this.form.patchValue({
           title: this.task.title,
           description: this.task.description,
-          status: this.task.status
+          status: this.task.status,
+          startDate: this.task.startDate ?? '',
+          endDate: this.task.endDate ?? ''
         });
       } else {
         this.form.reset({ status: 'todo' });
@@ -67,14 +82,16 @@ export class TaskFormComponent implements OnChanges {
 
     this.isSaving = true;
 
-    const { title, description, status } = this.form.value;
+    const { title, description, status, startDate, endDate } = this.form.value;
 
     if (this.isEditMode && this.task && this.task.id != null) {
       const updated: Task = {
         ...this.task,
         title,
         description,
-        status
+        status,
+        startDate: startDate || undefined,
+        endDate: endDate || undefined
       };
 
       this.taskService.updateTask(this.task.id, updated).subscribe({
@@ -90,7 +107,7 @@ export class TaskFormComponent implements OnChanges {
         }
       });
     } else {
-      this.taskService.createTask({ title, description, status }).subscribe({
+      this.taskService.createTask({ title, description, status, startDate: startDate || undefined, endDate: endDate || undefined }).subscribe({
         next: (created) => {
           this.isSaving = false;
           this.successMessage = 'Task created successfully!';

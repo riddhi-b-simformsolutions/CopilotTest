@@ -7,6 +7,8 @@
         <th>Description</th>
         <th>Status</th>
         <th>Created At</th>
+        <th>Start Date</th>
+        <th>End Date</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -21,6 +23,8 @@
           <span [ngClass]="task.status">{{ getStatusDisplayText(task.status) }}</span>
         </td>
         <td class="date-cell">{{ task.createdAt | date: 'short' }}</td>
+        <td class="date-cell">{{ task.startDate ? (task.startDate | date: 'mediumDate') : '—' }}</td>
+        <td class="date-cell">{{ task.endDate ? (task.endDate | date: 'mediumDate') : '—' }}</td>
         <td class="actions-cell">
           <button (click)="onEdit(task)" class="edit-btn">Edit</button>
           <button (click)="onDelete(task)" [disabled]="isDeleting(task)" class="delete-btn">

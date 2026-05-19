@@ -6,6 +6,8 @@ export interface Task {
   description?: string;
   status: TaskStatus;
   createdAt: string; // ISO string
+  startDate?: string; // ISO date string
+  endDate?: string;   // ISO date string
   priority?: number; // For drag-and-drop ordering
 }
 
